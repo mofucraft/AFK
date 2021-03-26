@@ -9,23 +9,24 @@ import static org.bukkit.Bukkit.broadcastMessage;
 import static org.bukkit.Bukkit.getLogger;
 
 public class ChangeMode {
-    public void ToAFK(Player player) {
-        if(val.afkplayer.contains(player.getPlayer())) {
+    public void ToAFK(Player player, String reason) {
 
-            val.afkplayer.remove(player.getPlayer());
-            player.sendMessage(ChatColor.YELLOW + "すでに離席中になっています＾～＾");
-
-        } else {
-
-            getLogger().info(player.getName() + " が離席しました");
-            broadcastMessage(ChatColor.YELLOW + player.getName() + " が離席しました");
-
+        if(!val.afkplayer.contains(player.getPlayer())) {
+            if (reason == null) {
+                getLogger().info(player.getName() + " が離席しました");
+                broadcastMessage(ChatColor.YELLOW + player.getName() + " が離席しました");
+            } else {
+                getLogger().info(player.getName() + " が離席しました | " + reason);
+                broadcastMessage(ChatColor.YELLOW + player.getName() + " が離席しました | " + reason);
+            }
             //ImmutableContextSet contextSet = luckPerms.getContextManager().getContext(player);
             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
             String command = "lp user " + player.getName() + " parent add afk";
             Bukkit.dispatchCommand(console, command);
 
             val.afkplayer.add(player.getPlayer());
+        } else {
+            return;
         }
     }
 

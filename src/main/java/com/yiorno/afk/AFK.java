@@ -1,5 +1,6 @@
 package com.yiorno.afk;
 
+import jdk.internal.jline.internal.Nullable;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;
@@ -8,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,8 @@ public final class AFK extends JavaPlugin implements Listener {
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
-        FileConfiguration config = getConfig();
+        Config config = new Config(this);
+        config.load();
 
         getLogger().info("離席管理が起動しました");
         getServer().getPluginManager().registerEvents(this, this);
@@ -35,7 +36,7 @@ public final class AFK extends JavaPlugin implements Listener {
                 Automation automation = new Automation();
                 automation.checkAFK();
             }
-        }, 0L, 5*20L);
+        }, 0L, Config.checkingInterval * 20L);
     }
 
     @Override
@@ -47,26 +48,37 @@ public final class AFK extends JavaPlugin implements Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
         if(cmd.getName().equalsIgnoreCase("afk")){
+
             Player player = (Player)sender;
             //User user = (User)sender;
 
             if(val.afkplayer.contains(player.getPlayer())) {
 
-                val.afkplayer.remove(player.getPlayer());
                 player.sendMessage(ChatColor.YELLOW + "すでに離席中になっています＾～＾");
+                return true;
 
             } else {
 
-                ChangeMode changeMode = new ChangeMode();
-                changeMode.ToAFK(player);
+                if (args.length != 0) {
+                    String reason = args[0];
+                    ChangeMode changeMode = new ChangeMode();
+                    changeMode.ToAFK(player, reason);
+                    return true;
+                } else {
+                    ChangeMode changeMode = new ChangeMode();
+                    changeMode.ToAFK(player, null);
+                    return true;
+                }
 
             }
         }
+
         return false;
     }
 
 
     @EventHandler
+    @Nullable
     public void onMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
 

@@ -8,6 +8,9 @@ public class Automation {
 
     public void checkAFK() {
 
+        Integer afkCount;
+        afkCount = Config.setAFKInterval * 60 / Config.checkingInterval;
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             Integer count = val.map.get(player.getPlayer());
 
@@ -16,10 +19,9 @@ public class Automation {
                 return;
             }
 
-            //30sごとにチェックなので2倍にする
-            if (count >= 5*2) {
+            if (count >= afkCount) {
                 ChangeMode changeMode = new ChangeMode();
-                changeMode.ToAFK(player);
+                changeMode.ToAFK(player, null);
             } else {
                 count++;
                 val.map.replace(player.getPlayer(), count);

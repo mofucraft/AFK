@@ -6,13 +6,17 @@
 #max-tps:
 #min-mspt:
 
-
+checking-interval: 30
+#seconds
+set-afk-interval: 5
+#minutes
 
 max-player: 15
 type: "mspt"
 max-tps: 17.0
 min-mspt: 60
-kick-time:
+min-kick-time: 20
+#minutes
 
 #the function to set the prefix
 set-time:
