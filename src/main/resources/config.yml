@@ -5,8 +5,11 @@
 #type: tps or mspt
 #max-tps:
 #min-mspt:
+
+
+
 max-player: 15
-type: mspt
+type: "mspt"
 max-tps: 17.0
 min-mspt: 60
 kick-time:

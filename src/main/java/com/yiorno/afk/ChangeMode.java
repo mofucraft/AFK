@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import static org.bukkit.Bukkit.broadcastMessage;
 import static org.bukkit.Bukkit.getLogger;
@@ -27,8 +26,6 @@ public class ChangeMode {
             Bukkit.dispatchCommand(console, command);
 
             val.afkplayer.add(player.getPlayer());
-
-            val.map.put(player.getPlayer(), player.getLocation());
         }
     }
 

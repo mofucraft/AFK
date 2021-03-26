@@ -5,10 +5,10 @@ import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,19 +17,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.bukkit.Bukkit.broadcastMessage;
-
 public final class AFK extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
+        FileConfiguration config = getConfig();
+
         getLogger().info("離席管理が起動しました");
         getServer().getPluginManager().registerEvents(this, this);
 
@@ -55,8 +50,17 @@ public final class AFK extends JavaPlugin implements Listener {
             Player player = (Player)sender;
             //User user = (User)sender;
 
-            ChangeMode changeMode = new ChangeMode();
-            changeMode.ToAFK(player);
+            if(val.afkplayer.contains(player.getPlayer())) {
+
+                val.afkplayer.remove(player.getPlayer());
+                player.sendMessage(ChatColor.YELLOW + "すでに離席中になっています＾～＾");
+
+            } else {
+
+                ChangeMode changeMode = new ChangeMode();
+                changeMode.ToAFK(player);
+
+            }
         }
         return false;
     }
@@ -72,6 +76,8 @@ public final class AFK extends JavaPlugin implements Listener {
             return;
         }
 
+        val.map.remove(player.getPlayer());
+        val.map.put(player.getPlayer(), 1);
         ChangeMode changeMode = new ChangeMode();
         changeMode.comeBack(player);
     }
