@@ -1,0 +1,13 @@
+name: AFK
+version: ${project.version}
+main: com.yiorno.afk.AFK
+api-version: 1.16
+prefix: [AFK]
+authors: [yossy_zip]
+description: some functions for afk
+website: https://yiorno.com/plugins/afk
+depend: [LuckPerms]
+
+commands:
+  afk:
+    description: to change to a afk mode.

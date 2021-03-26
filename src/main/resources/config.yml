@@ -1,0 +1,15 @@
+#AFK
+#
+#the function to kick automatically
+#max-player: how many players
+#type: tps or mspt
+#max-tps:
+#min-mspt:
+max-player: 15
+type: mspt
+max-tps: 17.0
+min-mspt: 60
+kick-time:
+
+#the function to set the prefix
+set-time:
