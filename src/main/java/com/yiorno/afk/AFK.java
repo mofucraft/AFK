@@ -1,6 +1,5 @@
 package com.yiorno.afk;
 
-import jdk.internal.jline.internal.Nullable;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;
@@ -17,6 +16,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import javax.annotation.Nullable;
 
 public final class AFK extends JavaPlugin implements Listener {
 
