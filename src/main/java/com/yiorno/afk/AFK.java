@@ -102,7 +102,7 @@ public final class AFK extends JavaPlugin implements Listener {
         if (val.afkplayer.contains(player.getPlayer())) {
             val.afkplayer.remove(player.getPlayer());
             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-            String command = "/lp user " + player.getName() + " parent remove afk";
+            String command = "lp user " + player.getName() + " parent remove afk";
             Bukkit.dispatchCommand(console, command);
         }
     }
@@ -114,7 +114,7 @@ public final class AFK extends JavaPlugin implements Listener {
         if (val.afkplayer.contains(player.getPlayer())) {
             val.afkplayer.remove(player.getPlayer());
             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-            String command = "/lp user " + player.getName() + " parent remove afk";
+            String command = "lp user " + player.getName() + " parent remove afk";
             Bukkit.dispatchCommand(console, command);
         }
     }
