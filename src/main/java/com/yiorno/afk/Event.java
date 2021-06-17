@@ -15,7 +15,7 @@ public class Event implements Listener {
     @EventHandler
     @Nullable
     public void onMove(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
+        Player p = e.getPlayer();
 
         if (e.getTo().getBlockX() == e.getFrom().getBlockX()
                 && e.getTo().getBlockY() == e.getFrom().getBlockY()
@@ -24,7 +24,7 @@ public class Event implements Listener {
         }
 
         ChangeMode changeMode = new ChangeMode();
-        changeMode.comeBack(player);
+        changeMode.comeBack(p);
     }
 
     @EventHandler
