@@ -1,13 +1,24 @@
 package com.yiorno.afk;
 
+import jdk.internal.jline.internal.Nullable;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.context.ImmutableContextSet;
+import net.luckperms.api.model.user.User;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public final class AFK extends JavaPlugin {
+public final class AFK extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
@@ -17,7 +28,7 @@ public final class AFK extends JavaPlugin {
         config.load();
 
         getLogger().info("離席管理が起動しました");
-        getServer().getPluginManager().registerEvents(new Event(), this);
+        getServer().getPluginManager().registerEvents(this, this);
 
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
@@ -39,24 +50,73 @@ public final class AFK extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
         if(cmd.getName().equalsIgnoreCase("afk")){
 
-            Player p = (Player)sender;
+            Player player = (Player)sender;
             //User user = (User)sender;
 
-            if(Val.afkplayer.contains(p)) {
+            if(val.afkplayer.contains(player.getPlayer())) {
 
-                p.sendMessage(ChatColor.YELLOW + "すでに離席中になっています＾～＾");
+                player.sendMessage(ChatColor.YELLOW + "すでに離席中になっています＾～＾");
                 return true;
 
             } else {
 
-                ChangeMode changeMode = new ChangeMode();
-                changeMode.ToAFK(p, args[0]);
-                return true;
+                if (args.length != 0) {
+                    String reason = args[0];
+                    ChangeMode changeMode = new ChangeMode();
+                    changeMode.ToAFK(player, reason);
+                    return true;
+                } else {
+                    ChangeMode changeMode = new ChangeMode();
+                    changeMode.ToAFK(player, null);
+                    return true;
+                }
 
             }
         }
 
         return false;
+    }
+
+
+    @EventHandler
+    @Nullable
+    public void onMove(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+
+        if (e.getTo().getBlockX() == e.getFrom().getBlockX()
+                && e.getTo().getBlockY() == e.getFrom().getBlockY()
+                && e.getTo().getBlockZ() == e.getFrom().getBlockZ()) {
+            return;
+        }
+
+        val.map.remove(player.getPlayer());
+        val.map.put(player.getPlayer(), 1);
+        ChangeMode changeMode = new ChangeMode();
+        changeMode.comeBack(player);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player player = e.getPlayer();
+
+        if (val.afkplayer.contains(player.getPlayer())) {
+            val.afkplayer.remove(player.getPlayer());
+            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+            String command = "/lp user " + player.getName() + " parent remove afk";
+            Bukkit.dispatchCommand(console, command);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+
+        if (val.afkplayer.contains(player.getPlayer())) {
+            val.afkplayer.remove(player.getPlayer());
+            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+            String command = "/lp user " + player.getName() + " parent remove afk";
+            Bukkit.dispatchCommand(console, command);
+        }
     }
 
 }
