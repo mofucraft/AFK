@@ -9,34 +9,74 @@ import static org.bukkit.Bukkit.broadcastMessage;
 import static org.bukkit.Bukkit.getLogger;
 
 public class ChangeMode {
-    public void ToAFK(Player player, String reason) {
+    public void ToAFK(Player p, String reason) {
 
-        if(!val.afkplayer.contains(player.getPlayer())) {
-            if (reason == null) {
-                getLogger().info(player.getName() + " が離席しました");
-                broadcastMessage(ChatColor.YELLOW + player.getName() + " が離席しました");
-            } else {
-                getLogger().info(player.getName() + " が離席しました | " + reason);
-                broadcastMessage(ChatColor.YELLOW + player.getName() + " が離席しました | " + reason);
-            }
-            //ImmutableContextSet contextSet = luckPerms.getContextManager().getContext(player);
-            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-            String command = "lp user " + player.getName() + " parent add afk";
-            Bukkit.dispatchCommand(console, command);
+        if(!Val.afkplayer.contains(p)) {
 
-            val.afkplayer.add(player.getPlayer());
-        } else {
-            return;
+            String msg = p.getName() + " が離席しました";
+            msg = (reason == null) ? msg : msg + " | " + reason;
+
+            getLogger().info(msg);
+            broadcastMessage(ChatColor.YELLOW + msg);
+
+            Val.afkplayer.add(p);
+            lpAdd(p);
+
         }
+
     }
 
-    public void comeBack(Player player) {
-        if (val.afkplayer.contains(player.getPlayer())) {
-            val.afkplayer.remove(player.getPlayer());
-            broadcastMessage(ChatColor.YELLOW + player.getName() + " が帰ってきました");
-            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-            String command = "lp user " + player.getName() + " parent remove afk";
-            Bukkit.dispatchCommand(console, command);
+    public void comeBack(Player p) {
+
+        if(Val.afkplayer.contains(p)) {
+            Val.afkplayer.remove(p);
+            Val.map.remove(p);
+            Val.map.put(p, 1);
+
+            broadcastMessage(ChatColor.YELLOW + p.getName() + " が帰ってきました");
+
+            lpRemove(p);
         }
+
+    }
+
+    public void release(Player p){
+
+        if(Val.afkplayer.contains(p)) {
+            Val.afkplayer.remove(p);
+            Val.map.remove(p);
+            Val.map.put(p, 1);
+
+            lpRemove(p);
+        }
+
+    }
+
+    public void active(Player p){
+
+        if(Val.afkplayer.contains(p)){
+            return;
+        }
+
+        Val.map.remove(p);
+        Val.map.put(p, 1);
+
+    }
+
+    public void lpAdd(Player p){
+
+        //ImmutableContextSet contextSet = luckPerms.getContextManager().getContext(player);
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        String command = "lp user " + p.getName() + " parent add afk";
+        Bukkit.dispatchCommand(console, command);
+
+    }
+
+    public void lpRemove(Player p){
+
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        String command = "lp user " + p.getName() + " parent remove afk";
+        Bukkit.dispatchCommand(console, command);
+
     }
 }

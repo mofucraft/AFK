@@ -1,0 +1,76 @@
+package com.yiorno.afk;
+
+import jdk.internal.jline.internal.Nullable;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+public class Event implements Listener {
+
+    @EventHandler
+    @Nullable
+    public void onMove(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+
+        if (e.getTo().getBlockX() == e.getFrom().getBlockX()
+                && e.getTo().getBlockY() == e.getFrom().getBlockY()
+                && e.getTo().getBlockZ() == e.getFrom().getBlockZ()) {
+            return;
+        }
+
+        ChangeMode changeMode = new ChangeMode();
+        changeMode.comeBack(player);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+
+        ChangeMode cm = new ChangeMode();
+        cm.release(e.getPlayer());
+
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+
+        ChangeMode cm = new ChangeMode();
+        cm.release(e.getPlayer());
+
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e){
+
+        if(!(Val.afkplayer.contains(e.getPlayer()))){
+            return;
+        }
+
+        ChangeMode cm = new ChangeMode();
+        cm.active(e.getPlayer());
+
+    }
+
+    @EventHandler
+    public void onPunch(EntityDamageByEntityEvent e){
+
+        if(!(e.getDamager() instanceof Player)){
+            return;
+        }
+
+        Player p = (Player) e.getDamager();
+
+        if(Val.afkplayer.contains(p)){
+            return;
+        }
+
+        ChangeMode cm = new ChangeMode();
+        cm.active(p);
+
+    }
+
+}
