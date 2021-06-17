@@ -46,12 +46,14 @@ public class Event implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
 
+        ChangeMode cm = new ChangeMode();
+
         if(!(Val.afkplayer.contains(e.getPlayer()))){
+            cm.active(e.getPlayer());
             return;
         }
 
-        ChangeMode cm = new ChangeMode();
-        cm.active(e.getPlayer());
+        cm.comeBack(e.getPlayer());
 
     }
 
@@ -63,12 +65,13 @@ public class Event implements Listener {
         }
 
         Player p = (Player) e.getDamager();
+        ChangeMode cm = new ChangeMode();
 
         if(Val.afkplayer.contains(p)){
+            cm.comeBack(p);
             return;
         }
 
-        ChangeMode cm = new ChangeMode();
         cm.active(p);
 
     }

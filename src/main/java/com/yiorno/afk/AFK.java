@@ -54,8 +54,10 @@ public final class AFK extends JavaPlugin {
 
             } else {
 
+                String reason;
+                reason = (args.length == 0) ? null : args[0];
                 ChangeMode changeMode = new ChangeMode();
-                changeMode.ToAFK(p, args[0]);
+                changeMode.ToAFK(p, reason);
                 return true;
 
             }
