@@ -1,6 +1,5 @@
 package com.yiorno.afk;
 
-import jdk.internal.jline.internal.Nullable;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.user.User;

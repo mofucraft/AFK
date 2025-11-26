@@ -7,6 +7,7 @@ authors: [yossy_zip]
 description: some functions for afk
 website: https://yiorno.com/plugins/afk
 depend: [LuckPerms]
+softdepend: [SuperVanish, PremiumVanish]
 
 commands:
   afk:

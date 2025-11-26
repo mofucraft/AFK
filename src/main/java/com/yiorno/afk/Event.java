@@ -1,6 +1,5 @@
 package com.yiorno.afk;
 
-import jdk.internal.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class Event implements Listener {
 
     @EventHandler
-    @Nullable
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
 
