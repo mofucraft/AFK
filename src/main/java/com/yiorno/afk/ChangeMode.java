@@ -1,10 +1,11 @@
 package com.yiorno.afk;
 
-import de.myzelyam.api.vanish.VanishAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.lang.reflect.Method;
 
 import static org.bukkit.Bukkit.broadcastMessage;
 import static org.bukkit.Bukkit.getLogger;
@@ -94,9 +95,15 @@ public class ChangeMode {
      */
     private boolean isPlayerInvisible(Player p) {
         try {
-            return VanishAPI.isInvisible(p);
-        } catch (NoClassDefFoundError | NoSuchMethodError e) {
+            // リフレクションを使用してVanishAPIにアクセス
+            Class<?> vanishAPI = Class.forName("de.myzelyam.api.vanish.VanishAPI");
+            Method isInvisibleMethod = vanishAPI.getMethod("isInvisible", Player.class);
+            return (Boolean) isInvisibleMethod.invoke(null, p);
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             // SuperVanish/PremiumVanishがインストールされていない場合
+            return false;
+        } catch (Exception e) {
+            // その他のエラー
             return false;
         }
     }

@@ -6,7 +6,7 @@
 
     <groupId>com.yiorno</groupId>
     <artifactId>afk</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>AFK</name>
@@ -62,7 +62,7 @@
         </repository>
         <repository>
             <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
@@ -91,12 +91,6 @@
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.LeonMangler</groupId>
-            <artifactId>SuperVanish</artifactId>
-            <version>6.2.18</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
