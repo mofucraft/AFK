@@ -1,5 +1,6 @@
 package com.yiorno.afk;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -17,7 +18,11 @@ public class ChangeMode {
             msg = (reason == null) ? msg : msg + " | " + reason;
 
             getLogger().info(msg);
-            broadcastMessage(ChatColor.YELLOW + msg);
+
+            // SuperVanishでInvisible状態の場合は通知を送信しない
+            if(!isPlayerInvisible(p)) {
+                broadcastMessage(ChatColor.YELLOW + msg);
+            }
 
             Val.afkplayer.add(p);
             lpAdd(p);
@@ -33,7 +38,10 @@ public class ChangeMode {
             Val.map.remove(p);
             Val.map.put(p, 1);
 
-            broadcastMessage(ChatColor.YELLOW + p.getName() + " が帰ってきました");
+            // SuperVanishでInvisible状態の場合は通知を送信しない
+            if(!isPlayerInvisible(p)) {
+                broadcastMessage(ChatColor.YELLOW + p.getName() + " が帰ってきました");
+            }
 
             lpRemove(p);
         }
@@ -78,5 +86,18 @@ public class ChangeMode {
         String command = "lp user " + p.getName() + " parent remove afk";
         Bukkit.dispatchCommand(console, command);
 
+    }
+
+    /**
+     * SuperVanish/PremiumVanishでプレイヤーがInvisible状態かどうかをチェック
+     * プラグインが利用できない場合はfalseを返す
+     */
+    private boolean isPlayerInvisible(Player p) {
+        try {
+            return VanishAPI.isInvisible(p);
+        } catch (NoClassDefFoundError | NoSuchMethodError e) {
+            // SuperVanish/PremiumVanishがインストールされていない場合
+            return false;
+        }
     }
 }
