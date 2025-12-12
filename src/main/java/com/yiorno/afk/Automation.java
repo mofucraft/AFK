@@ -16,7 +16,7 @@ public class Automation {
 
             if (count == null) {
                 Val.map.put(p, 1);
-                return;
+                continue;
             }
 
             if (count >= afkCount) {

@@ -51,13 +51,11 @@ public class ChangeMode {
 
     public void release(Player p){
 
-        if(Val.afkplayer.contains(p)) {
-            Val.afkplayer.remove(p);
-            Val.map.remove(p);
-            Val.map.put(p, 1);
+        Val.afkplayer.remove(p);
+        Val.map.remove(p);
 
-            lpRemove(p);
-        }
+        // サーバー移動時に権限が残らないよう、常にlpRemoveを呼び出す
+        lpRemove(p);
 
     }
 

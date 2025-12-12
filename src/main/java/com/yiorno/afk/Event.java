@@ -22,7 +22,12 @@ public class Event implements Listener {
         }
 
         ChangeMode changeMode = new ChangeMode();
-        changeMode.comeBack(p);
+
+        if (Val.afkplayer.contains(p)) {
+            changeMode.comeBack(p);
+        } else {
+            changeMode.active(p);
+        }
     }
 
     @EventHandler
