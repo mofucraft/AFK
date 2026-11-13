@@ -14,6 +14,9 @@ set-afk-interval: 5
 look-threshold: 5.0
 #degrees: 視点の向き(yaw+pitch)の変化の合計がこれ以上で「操作した」と数える（checking-interval ごとに合計を空にする）
 #クリック・攻撃は数えない（v1.4〜）・チャットとコマンド（/afk 以外）は数える（v1.5〜）
+#v1.6〜: 位置の変化（水流・ピストン・乗り物で運ばれる）は数えない。移動キー（前後左右・ジャンプ・スニーク・ダッシュ）の押し替えは数える
+afk-cancel-actions: true
+#離席中は使う・置く・壊す・攻撃するを黙って空振りにする（メッセージ・音・ログなし）。false で切る
 
 max-player: 15
 type: "mspt"

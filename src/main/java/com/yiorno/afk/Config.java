@@ -12,6 +12,7 @@ public class Config {
     public static Integer checkingInterval;
     public static Integer setAFKInterval;
     public static Double lookThreshold;
+    public static boolean cancelActions;
 
     public Config(Plugin plugin) {
         this.plugin = plugin;
@@ -28,6 +29,7 @@ public class Config {
         checkingInterval = config.getInt("checking-interval");
         setAFKInterval = config.getInt("set-afk-interval");
         lookThreshold = config.getDouble("look-threshold", 5.0);
+        cancelActions = config.getBoolean("afk-cancel-actions", true);
 
     }
 
