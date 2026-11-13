@@ -53,6 +53,7 @@ public class ChangeMode {
 
         Val.afkplayer.remove(p);
         Val.map.remove(p);
+        Val.lookSum.remove(p);
 
         // サーバー移動時に権限が残らないよう、常にlpRemoveを呼び出す
         lpRemove(p);
