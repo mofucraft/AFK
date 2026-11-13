@@ -1,5 +1,6 @@
 #AFK
 #
+#自動キックはこのプラグインに入っていない（v1.5 で確認・下の max-player〜min-kick-time は使われていない古い設定）
 #the function to kick automatically
 #max-player: how many players
 #type: tps or mspt
@@ -12,7 +13,7 @@ set-afk-interval: 5
 #minutes
 look-threshold: 5.0
 #degrees: 視点の向き(yaw+pitch)の変化の合計がこれ以上で「操作した」と数える（checking-interval ごとに合計を空にする）
-#クリック・攻撃は数えない（v1.4〜）
+#クリック・攻撃は数えない（v1.4〜）・チャットとコマンド（/afk 以外）は数える（v1.5〜）
 
 max-player: 15
 type: "mspt"
