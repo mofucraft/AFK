@@ -6,14 +6,14 @@
 
     <groupId>com.yiorno</groupId>
     <artifactId>afk</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
 
     <name>AFK</name>
 
     <description>some functions for afk</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://yiorno.com/plugins/afk</url>
@@ -75,16 +75,11 @@
     </repositories>
 
     <dependencies>
+        <!-- v1.6: PlayerInputEvent（1.21.3〜）を使うため paper-api を上げた（main は Paper 26.2） -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.21.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

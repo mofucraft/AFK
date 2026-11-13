@@ -38,6 +38,13 @@ public final class AFK extends JavaPlugin {
                 automation.checkAFK();
             }
         }, 0L, Config.checkingInterval * 20L);
+
+        // v1.6: 毎秒、各プレイヤーの視点の向きを読んで前回と比べる（椅子・乗り物では PlayerMoveEvent が来ないことがある）
+        scheduler.scheduleSyncRepeatingTask(this, () -> {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                Event.checkRotation(p);
+            }
+        }, 20L, 20L);
     }
 
     @Override
