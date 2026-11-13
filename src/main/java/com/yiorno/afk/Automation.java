@@ -10,6 +10,9 @@ public class Automation {
         int afkCount;
         afkCount = Config.setAFKInterval * 60 / Config.checkingInterval;
 
+        // 視点の小さな揺れは間隔ごとに捨てる（ゆっくり溜まって戻るのを防ぐ）
+        Val.lookSum.clear();
+
         for (Player p : Bukkit.getOnlinePlayers()) {
 
             Integer count = Val.map.get(p);

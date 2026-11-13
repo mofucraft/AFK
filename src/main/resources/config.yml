@@ -10,6 +10,9 @@ checking-interval: 30
 #seconds
 set-afk-interval: 5
 #minutes
+look-threshold: 5.0
+#degrees: 視点の向き(yaw+pitch)の変化の合計がこれ以上で「操作した」と数える（checking-interval ごとに合計を空にする）
+#クリック・攻撃は数えない（v1.4〜）
 
 max-player: 15
 type: "mspt"
