@@ -4,13 +4,17 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Event implements Listener {
 
-    // v1.4: 活動とみなすのは「ブロックをまたぐ移動」と「視点の向きの変化」だけ
+    // v1.4: 活動とみなすのは「ブロックをまたぐ移動」と「視点の向きの変化」（v1.5 でチャットとコマンドを足した）
     // クリック（PlayerInteractEvent）と攻撃（EntityDamageByEntityEvent）は数えない（自動連打中は放置と判定する）
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
@@ -46,6 +50,32 @@ public class Event implements Listener {
         }
 
         Val.lookSum.remove(p);
+        markActive(p);
+    }
+
+    // v1.5: チャットとコマンドも「操作した」と数える（GUI のクリックは数えないまま）
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onChat(AsyncPlayerChatEvent e) {
+        Player p = e.getPlayer();
+        // 非同期で来るので、判定はメインスレッドへ戻してから
+        Bukkit.getScheduler().runTask(AFK.getInstance(), () -> {
+            if (p.isOnline()) {
+                markActive(p);
+            }
+        });
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        String label = e.getMessage().split(" ", 2)[0].toLowerCase();
+        // /afk 自体は数えない（離席中に /afk を打つと「帰ってきました」→「離席しました」が続けて出るため）
+        if (label.equals("/afk") || label.endsWith(":afk")) {
+            return;
+        }
+        markActive(e.getPlayer());
+    }
+
+    private static void markActive(Player p) {
         ChangeMode changeMode = new ChangeMode();
 
         if (Val.afkplayer.contains(p)) {

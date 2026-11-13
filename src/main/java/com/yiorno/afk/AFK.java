@@ -13,9 +13,16 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public final class AFK extends JavaPlugin {
 
+    private static AFK instance;
+
+    public static AFK getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
+        instance = this;
         saveDefaultConfig();
         Config config = new Config(this);
         config.load();
