@@ -16,7 +16,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInputEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -128,7 +127,7 @@ public class Event implements Listener {
         return Val.afkplayer.contains(p);
     }
 
-    // v1.6: 離席中は使う・置く・壊す・攻撃するを黙って空振りにする（メッセージ・音・ログは出さない）。
+    // v1.6: 離席中は使う・置く・壊す・攻撃するを黙って空振りにする（メッセージ・音・ログは出さない）。釣りは v1.6.1 で外した（放置釣りは許す）。
     // 戻るのはキー・視点・チャット・コマンドだけなので、空振りしたクリックで離席が解けることはない。config の afk-cancel-actions: false で切れる
     private static void cancelIfAfk(Player p, Cancellable e) {
         if (shouldCancel(p)) {
@@ -148,6 +147,10 @@ public class Event implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent e) {
+        // v1.6.1: 放置釣りは許す（釣り竿の右クリックは空振りにしない）
+        if (e.getItem() != null && e.getItem().getType() == org.bukkit.Material.FISHING_ROD) {
+            return;
+        }
         if (shouldCancel(e.getPlayer())) {
             e.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
             e.setUseItemInHand(org.bukkit.event.Event.Result.DENY);
@@ -177,9 +180,6 @@ public class Event implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBucketFill(PlayerBucketFillEvent e) { cancelIfAfk(e.getPlayer(), e); }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onFish(PlayerFishEvent e) { cancelIfAfk(e.getPlayer(), e); }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onConsume(PlayerItemConsumeEvent e) { cancelIfAfk(e.getPlayer(), e); }
